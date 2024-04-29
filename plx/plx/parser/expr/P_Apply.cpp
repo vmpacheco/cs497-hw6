@@ -18,16 +18,11 @@ namespace PLX {
         
         if (!pIdentifier(tokens, ident)) {
             if (!pParenExpr(tokens, ident)) {
-                std::cout << "failed at parenexpr";
-                return false;
-            } else if (!pArgumentList(tokens, value)) {
-                std::cout << "failed at no ident arg list";
                 return false;
             }
         }
 
         if (!pArgumentList(tokens, value)) {
-            std::cout << "failed at arg list";
             return false;
         }
 
