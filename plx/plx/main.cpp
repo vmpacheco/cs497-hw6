@@ -13,6 +13,7 @@
 #include <plx/object/Globals.hpp>
 #include <plx/object/HashCode.hpp>
 #include <plx/object/Object.hpp>
+#include <plx/parser/Parser.hpp>
 
 PLX::HashTable* parseOptions(int argc, char** argv) {
     PLX::HashTable* argMap = new PLX::HashTable();
@@ -81,7 +82,36 @@ void shutdown() {
 }
 
 void readEvalPrint() {
-    // TODO fill this in
+    std::cout << "PLX> ";
+    std::string sInput;
+    std::getline(std::cin, sInput);
+
+    PLX::Lexer* lexer = new PLX::Lexer();
+    PLX::InputStream* input = new PLX::InputStream(sInput);
+    PLX::List* tokens = new PLX::List();
+    PLX::Object* errorVal = new PLX::Object();
+
+    bool error = !lexer->tokenize(input, tokens, errorVal);
+
+    /*
+    PLX::Object * value;
+    PLX::Parser* parser = new PLX::Parser(tokens, value);
+    PLX::Evaluator* etor = new PLX::Evaluator();
+    */
+
+    std::cout << tokens;
+
+    if (error) {
+        std::cout << "Lexer error = " << errorVal << "\n";
+    } else {
+        std::cout << "Lexer tokens = " << tokens << "\n";
+    }
+}
+
+void repLoop() {
+    while (true) {
+        readEvalPrint();
+    }
 }
 
 int main(int argc, char** argv) {
@@ -89,7 +119,7 @@ int main(int argc, char** argv) {
     PLX::HashTable* argMap = parseOptions(argc, argv);
     PLX::GLOBALS->SetArgMap(argMap);
     // std::cout << "ArgMap = " << argMap << "\n";
-    readEvalPrint();
+    repLoop();
     shutdown();
     return 0;
 }

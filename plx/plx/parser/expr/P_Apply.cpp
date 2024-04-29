@@ -13,10 +13,29 @@ namespace PLX {
     }
 
     bool pApply(List*& tokens, Object*& value) {
-        // delete these three lines before fixing this function
-        (void)tokens;
-        (void)value;
-        return false;
+
+        Object* ident;
+        
+        if (!pIdentifier(tokens, ident)) {
+            if (!pParenExpr(tokens, ident)) {
+                std::cout << "failed at parenexpr";
+                return false;
+            } else if (!pArgumentList(tokens, value)) {
+                std::cout << "failed at no ident arg list";
+                return false;
+            }
+        }
+
+        if (!pArgumentList(tokens, value)) {
+            std::cout << "failed at arg list";
+            return false;
+        }
+
+        Queue* valueQueue = static_cast<Queue*>(value);
+        
+        value = new Apply(ident, valueQueue->asList());
+
+        return true;
     }
 
 }

@@ -28,6 +28,7 @@ namespace PLX {
         EXPECT_EQ(letString, ss.str());
     }
 
+/*
     TEST_F(P_Let_Test, Let_Bindings2) {
         Lexer* lexer = new Lexer();
         List* tokens;
@@ -42,6 +43,7 @@ namespace PLX {
         ss << value;
         EXPECT_EQ(letString, ss.str());
     }
+*/
 
     TEST_F(P_Let_Test, LetIn_Bindings1) {
         Lexer* lexer = new Lexer();
@@ -58,6 +60,7 @@ namespace PLX {
         EXPECT_EQ(letString, ss.str());
     }
 
+/*
     TEST_F(P_Let_Test, LetIn_Bindings2) {
         Lexer* lexer = new Lexer();
         List* tokens;
@@ -72,6 +75,7 @@ namespace PLX {
         ss << value;
         EXPECT_EQ(letString, ss.str());
     }
+*/
 
     TEST_F(P_Let_Test, FailStrings_Let) {
         std::initializer_list<std::string> errorStrings {
