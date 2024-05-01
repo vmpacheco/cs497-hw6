@@ -13,7 +13,8 @@
 #include <plx/object/Globals.hpp>
 #include <plx/object/HashCode.hpp>
 #include <plx/object/Object.hpp>
-#include <plx/parser/Parser.hpp>
+#include <plx/parser/P_Any.hpp>
+#include <plx/evaluator/Evaluator.hpp>
 
 PLX::HashTable* parseOptions(int argc, char** argv) {
     PLX::HashTable* argMap = new PLX::HashTable();
@@ -86,25 +87,28 @@ void readEvalPrint() {
     std::string sInput;
     std::getline(std::cin, sInput);
 
+    PLX::Evaluator* etor = new PLX::Evaluator();
     PLX::Lexer* lexer = new PLX::Lexer();
+
     PLX::InputStream* input = new PLX::InputStream(sInput);
     PLX::List* tokens = new PLX::List();
+
     PLX::Object* errorVal = new PLX::Object();
+    PLX::Object* savedVal = new PLX::Object();
+    PLX::Object* returnedVal = new PLX::Object();
+
 
     bool error = !lexer->tokenize(input, tokens, errorVal);
-
-    /*
-    PLX::Object * value;
-    PLX::Parser* parser = new PLX::Parser(tokens, value);
-    PLX::Evaluator* etor = new PLX::Evaluator();
-    */
-
-    std::cout << tokens;
 
     if (error) {
         std::cout << "Lexer error = " << errorVal << "\n";
     } else {
-        std::cout << "Lexer tokens = " << tokens << "\n";
+        if(!pAny(tokens, savedVal)) {
+            std::cout << "Parser error = " << savedVal << "\n";
+        } else {
+            returnedVal = etor->evalExpr(savedVal);
+            std::cout << returnedVal << "\n";
+        }
     }
 }
 
